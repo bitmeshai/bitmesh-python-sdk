@@ -1,20 +1,12 @@
 # Bitmesh Python SDK
 
-Python SDK for calling the Bitmesh AI API (chat, image, video, transcription, and tools) with the same OAuth signing model as the official PHP client. Browse [all available models](https://bitmesh.ai/models) on Bitmesh.ai.
+Python SDK for calling the Bitmesh AI API (chat, image, video, transcription, and tools) with built-in OAuth signing for `https://api.bitmesh.ai`. Browse [all available models](https://bitmesh.ai/models) on Bitmesh.ai.
 
-**Package names:** the installable distribution is **`bitmesh-python-sdk`** (what you `pip install`). The Python import module is **`bitmesh_ai`** (`from bitmesh_ai import BitmeshClient`).
+**Names:** install the distribution **`bitmesh-python-sdk`** with pip. Import the package **`bitmesh_ai`** in code (`from bitmesh_ai import BitmeshClient`).
 
 ---
 
-## Using this SDK in your project
-
-If you know Composer for PHP, the usual Python flow is: **virtual environment → declare dependency → `pip install` → import in code** (there is no separate autoload step).
-
-| PHP (Composer) | Python (pip) |
-|----------------|--------------|
-| `composer require bitmeshai/bitmesh-php-sdk` | `pip install bitmesh-python-sdk` (from PyPI, when published) |
-| `composer install` from `composer.lock` | `pip install -r requirements.txt` or install from your app’s `pyproject.toml` |
-| `use BitmeshAI\BitmeshClient` | `from bitmesh_ai import BitmeshClient` |
+## Install the package
 
 **1. Virtual environment (recommended)**
 
@@ -23,21 +15,21 @@ python3 -m venv .venv
 source .venv/bin/activate          # Windows: .venv\Scripts\activate
 ```
 
-**2. Install the SDK**
+**2. Add the dependency**
 
-- **From PyPI** (once this package is published):
+- **From PyPI** (once published):
 
   ```bash
   pip install bitmesh-python-sdk
   ```
 
-  In **`requirements.txt`**:
+  **`requirements.txt`:**
 
   ```text
   bitmesh-python-sdk>=0.1.0
   ```
 
-  In a **`pyproject.toml`** dependencies list (PEP 621 / Poetry / Hatch, etc.):
+  **`pyproject.toml`** dependencies (PEP 621 / Poetry / Hatch, etc.):
 
   ```toml
   dependencies = [
@@ -45,24 +37,24 @@ source .venv/bin/activate          # Windows: .venv\Scripts\activate
   ]
   ```
 
-- **From Git** (no PyPI release yet, or you need a specific revision):
+- **From Git** (specific revision or before PyPI):
 
   ```bash
   pip install "git+https://github.com/bitmeshai/bitmesh-python-sdk.git"
   ```
 
-  Pin a tag or commit by appending `@v0.1.0` or `@abc1234` to the URL.
+  Pin with `@v0.1.0` or `@commit` on the URL.
 
-- **From a local clone** (development or monorepo):
+- **From a local path** (your clone or monorepo):
 
   ```bash
   pip install /path/to/bitmesh-python-sdk
-  pip install -e /path/to/bitmesh-python-sdk   # editable install
+  pip install -e /path/to/bitmesh-python-sdk   # editable
   ```
 
 **3. Use in code**
 
-Pass OAuth consumer key and secret from your config or environment (do not hardcode secrets in the repo).
+Load OAuth consumer key and secret from environment or your app config—do not commit secrets.
 
 ```python
 from bitmesh_ai import BitmeshClient
@@ -71,9 +63,7 @@ client = BitmeshClient(key, secret, timeout_seconds=120)
 response = client.chat({...})
 ```
 
-**4. Credentials**
-
-Use environment variables, a secrets manager, or your framework’s settings—not committed files. Example:
+**4. Credentials (example)**
 
 ```bash
 export BITMESH_CONSUMER_KEY="your-oauth-consumer-key"
@@ -85,19 +75,7 @@ export BITMESH_CONSUMER_SECRET="your-oauth-consumer-secret"
 ## Requirements
 
 - Python **3.10+**
-- Runtime dependency: **`requests`** (installed automatically with this package).
-
----
-
-## Installation (from this repository)
-
-When developing the SDK itself, install from the repo root:
-
-```bash
-pip install .
-# or editable with dev tools (pytest, etc.)
-pip install -e ".[dev]"
-```
+- **`requests`** (pulled in automatically as a dependency of this package).
 
 ---
 
@@ -119,6 +97,17 @@ print(response)
 ```
 
 See `doc/code-examples.md` for full snippets and `doc/api-reference.md` for method-level behavior.
+
+---
+
+## Clone this repository (SDK development)
+
+From the repo root:
+
+```bash
+pip install .
+pip install -e ".[dev]"   # editable + pytest, etc.
+```
 
 ---
 
