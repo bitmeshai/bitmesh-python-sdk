@@ -177,6 +177,9 @@ with open("/tmp/mask.png", "wb") as fh:
 
 ## Tools – try-on (async) + query task
 
+Async try-on returns a ``task_id``. **Poll** with ``tools_query_async_task_result(task_id)`` until ``status``
+indicates completion (or an image URL appears). A single call is often not enough while the job is still running.
+
 ```python
 try_on = client.tools_portrait_try_on_clothes(
     {
@@ -193,11 +196,24 @@ try_on = client.tools_portrait_try_on_clothes(
 
 task_id = str(try_on.get("task_id") or "")
 
-query = client.tools_query_async_task_result(task_id)
-print(query.get("status"))
+import time
+
+while True:
+    query = client.tools_query_async_task_result(task_id)
+    status = str(query.get("status", "")).lower()
+    if status in ("success", "failed", "error", "completed"):
+        break
+    if isinstance(query.get("data"), dict) and (query["data"].get("image_url")):
+        break
+    time.sleep(3)
+
+print(query)
 ```
 
-Use the `task_id` returned from a successful async try-on submission when polling.
+If the result includes ``data["image_url"]`` pointing at ``/tools-result/...``, download the bytes with
+``get_tools_result()`` (see **Tools – background removal** above for stripping the path). Run
+``examples/tryon_example.py`` to submit, then ``examples/tryon_poll_example.py <task_id>`` to poll (and
+optionally set ``BITMESH_TRYON_OUTPUT`` for the saved image).
 
 ---
 

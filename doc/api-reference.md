@@ -80,13 +80,14 @@ On failure the client raises **`BitmeshError`** (`RuntimeError` subclass): HTTP 
 
 - **HTTP**: `POST /tools/portrait/try-on-clothes` (multipart)
 - **Description**: Virtual try-on. `files` maps **field name → path** (e.g. `person_image`, `top_garment`, `bottom_garment`). `fields` may include `task_type`, `resolution`, `restore_face`, etc. Every path must be a readable file.
+- **Async** (`task_type` often **`async`**): The response usually includes **`task_id`**. Poll completion with **`tools_query_async_task_result`** (not a single request). When the poll payload includes **`data.image_url`** under `/tools-result/`, download with **`get_tools_result`**. Same two-step flow as the PHP SDK try-on demo (submit, then query task).
 
 ---
 
 ## `tools_query_async_task_result(task_id) -> dict`
 
 - **HTTP**: `POST /tools/query-async-task-result` (`application/json` body `{"task_id":"..."}`)
-- **Description**: Poll an async tools task. Empty `task_id` raises **`BitmeshError`**.
+- **Description**: Poll an async tools task (e.g. try-on). Empty `task_id` raises **`BitmeshError`**. Jobs may need **several** polls until `status` is terminal or a result URL appears—see `examples/tryon_poll_example.py` and `doc/code-examples.md`.
 
 ---
 

@@ -27,6 +27,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=7.4", "python-dotenv>=1.0", "responses>=0.25"]
+examples = ["python-dotenv>=1.0"]
 
 [project.urls]
 Source = "https://github.com/bitmeshai/bitmesh-python-sdk"
